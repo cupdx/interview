@@ -40,8 +40,14 @@
                                 </li> 
                                 <li>
                                     <label for="gpa"><strong>Student GPA</strong></label>
-                                    <input value="{{{$student->gpa}}}" type="text" name="gpa" class="form-control">
-                                </li>  
+                                    <input value=
+                                    @if(null !== $student->gpa()->latest()->first())
+                                        "{{{$student->gpa()->latest()->first()->gpa}}}" 
+                                    @else
+                                    ""
+                                    @endif
+                                    type="text" name="gpa" class="form-control">
+                                </li>   
                             </ul>
                         </div>
                         <br>
