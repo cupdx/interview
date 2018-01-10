@@ -42,8 +42,12 @@ Route::post('edit-student', ['as'=>'edit-student-post',function(){
     $student->student_id = Request::get('student_id');
     $student->save();
 	
-    //If gpa changed save
-    if($student->gpa()->latest()->first()->gpa !== Request::get('gpa')){
+    //If no previous gpa or gpa changed then save
+    $currentGPA = $student->gpa()->latest()->first();
+    if(!is_null($currentGPA)){
+        $currentGPA = $currentGPA->gpa;
+    }
+    if(is_null($currentGPA) || $currentGPA !== Request::get('gpa')){
         $gpa = new Gpa();
         $gpa->gpa = Request::get('gpa');
         $student->gpa()->save($gpa);
