@@ -29,14 +29,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach($students as $student); ?>
+                            @foreach ($students as $student)
                                 <tr>
                                     <td>{{{$student->first_name}}}</td>
                                     <td>{{{$student->last_name}}}</td>
                                     <td>{{{$student->student_id}}}</td>
                                     <td>{{{$student->dob}}}</td>
-                                    <td><a href="/edit-student/{{$student->id}}" class="btn btn-info">Edit Student</a></td>
+                                    <td><a href="edit-student/{{$student->id}}" class="btn btn-info">Edit Student</a></td>
                                 </tr>
+                            @endforeach  
                         </tbody>
                     </table>
                 </div>
