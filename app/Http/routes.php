@@ -1,5 +1,6 @@
 <?php
 use App\Student;
+use App\Gpa;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -39,8 +40,18 @@ Route::post('edit-student', ['as'=>'edit-student-post',function(){
     $student->last_name  = Request::get('last_name');
     $student->dob        = Request::get('dob');
     $student->student_id = Request::get('student_id');
-	$student->gpa        = Request::get('gpa');
     $student->save();
+	
+    //If no previous gpa or gpa changed then save
+    $currentGPA = $student->gpa()->latest()->first();
+    if(!is_null($currentGPA)){
+        $currentGPA = $currentGPA->gpa;
+    }
+    if(is_null($currentGPA) || $currentGPA !== Request::get('gpa')){
+        $gpa = new Gpa();
+        $gpa->gpa = Request::get('gpa');
+        $student->gpa()->save($gpa);
+    }
     
     return Redirect::route('students');
 }]);
